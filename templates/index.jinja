@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="Stephan Hügel" name="author">
+    <meta content="" name="twitter:title">
+    <meta content="Where can I walk in Dublin while observing the 2 km covid-19 movement restriction?" name="description">
+    <meta content="Where can I walk in Dublin while observing the 2 km covid-19 movement restriction?" name="twitter:description">
+    <meta content="Where can I walk in Dublin while observing the 2 km covid-19 movement restriction?" name="og:description">
+    <meta content="summary_large_image" name="twitter:card">
+    <!-- <meta content="https://urschrei.github.io/greggs/meta.png" name="twitter:image"> -->
+    <meta content="1038301" property="twitter:account_id">
+    <meta content="urschrei@gmail.com" property="og:email">
+    <title>Where Can I Walk in Dublin?</title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+    <script type="application/ld+json">{"@context": "http://schema.org","@type": "CreativeWork","author": "Stephan Hügel"}</script>
+</head>
+<body>
+<div class="container-fluid" role="main">
+    <div class="row" id="info">
+        <div class="col">
+            <h5>What's This?</h5>
+            <p><small>
+                Due to the current movement restrictions, we're not allowed to travel more than 2 km from our homes. Press the button to locate yourself, and see the roads you can walk to from where you are now.
+            </small></p>
+            <p><small>
+                <strong>Remember:</strong> These are recommended distances for exercise and recreation. You can travel further for shopping, or if you're going to work. 
+            </small></p>
+            <form id="lookup" class="form-inline">
+                <div class="input-group mb-2 mr-sm-2">
+                    <button type="button" class="btn btn-dark mb-2" id="locate">Find Me</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="row border border-dark">
+      <div class="col-sm" id="map"></div></div>
+</div>
+<footer class="footer">
+    <div class="container-fluid">
+        <small><span class="text-muted">A <a href="https://twitter.com/urschrei">Stephan H&uuml;gel</a> distraction. <a href="https://github.com/urschrei">Source</a>.
+        </span></small>
+    </div>
+    <div class="container-fluid">
+        <small><span class="text-muted">How does this work? Using a street network of Dublin computed using <a href="https://osmnx.readthedocs.io/en/stable/">OSMNx</a>.
+        </span></small>
+    </div>
+</footer>
+<script src="static/bundle.js"></script>
+</body>
+</html>

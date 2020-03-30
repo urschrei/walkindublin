@@ -1,0 +1,29 @@
+@import "~bootstrap/scss/bootstrap";
+// mapbox-gl isn't scss, but the compiler seems OK with it anyway
+@import "~mapbox-gl/dist/mapbox-gl";
+
+#map {
+    padding-top: 5px;
+    height: 68vh;
+}
+
+.info {
+    padding-top: 10px;
+}
+
+.mapboxgl-popup-content {
+    max-width: 400px;
+    font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+}
+
+.greggs, .greggs:hover, .greggs:active, .greggs:visited {
+    background-color: #08427D !important;
+    border-color: #08427D !important;
+    color: #FBA917 !important;
+}
+
+.pret, .pret:hover, .pret:active, .pret:visited {
+    background-color: rgb(140, 29, 38) !important;
+    border-color: rgb(140, 29, 38) !important;
+    color: #FFFFF !important;
+}
