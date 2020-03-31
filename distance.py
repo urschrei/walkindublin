@@ -2,6 +2,7 @@ import os
 from flask import Flask
 from flask import render_template
 from flask import jsonify, request
+import json
 
 import logging
 
@@ -22,8 +23,10 @@ utm = CRS.from_epsg(32629)
 # ox assumes a "data" directory in which this file is located tsk tsk
 G = ox.load_graphml("dublin.graphml")
 # G_projected = ox.project_graph(G)
+full_graph_gdf = ox.save_load.graph_to_gdfs(G, nodes=False, fill_edge_geometry=True)
 
 from walk_limits import truncate
+from route_utils import generate_route
 
 # TODO: incoming lon, lat coords must be projected to correct UTM (EPSG:32629)
 # TODO: build Point from projected point coords
@@ -59,6 +62,29 @@ Time:               %(asctime)s
     app.logger.addHandler(stream_handler)
 
 
+class InvalidUsage(Exception):
+    status_code = 400
+
+    def __init__(self, message, status_code=None, payload=None):
+        Exception.__init__(self)
+        self.message = message
+        if status_code is not None:
+            self.status_code = status_code
+        self.payload = payload
+
+    def to_dict(self):
+        rv = dict(self.payload or ())
+        rv["message"] = self.message
+        return rv
+
+
+@app.errorhandler(InvalidUsage)
+def handle_invalid_usage(error):
+    response = jsonify(error.to_dict())
+    response.status_code = error.status_code
+    return response
+
+
 @app.route("/")
 def index():
     return render_template("index.jinja")
@@ -67,10 +93,69 @@ def index():
 @app.route("/streets", methods=["POST"])
 def streets():
     js = request.get_json(force=True)
+    # first, ensure we're within bounds
+    tb = full_graph_gdf.total_bounds
+    if (
+        js.get("lon", -6.4) < tb[0]
+        or js.get("lon", -6.0) > tb[2]
+        or js.get("lat", 53.32) < tb[1]
+        or js.get("lat", 53.45) > tb[3]
+    ):
+        raise InvalidUsage("Your coordinates are out of bounds.", status_code=400)
     # calculate street network
-    if js.get("coords", None):
-        bounds = truncate(G, (js["coords"]["latitude"], js["coords"]["longitude"]))
-        return jsonify(bounds)
+    if js.get("lat", None) and js.get("lon", None):
+        gdf_t = truncate(G, (js["lat"], js["lon"]))
+        resp = [
+            gdf_t.__geo_interface__,
+            list(gdf_t.total_bounds),
+        ]
+        response = app.response_class(
+            response=json.dumps(resp), mimetype="application/json"
+        )
+        return response
+    else:
+        raise InvalidUsage(
+            "Something went wrong with your coordinates", status_code=400
+        )
+
+
+@app.route("/route", methods=["POST"])
+def route():
+    js = request.get_json(force=True)
+    # first, ensure we're within bounds
+    tb = full_graph_gdf.total_bounds
+    if (
+        js.get("lon", -6.4) < tb[0]
+        or js.get("lon", -6.0) > tb[2]
+        or js.get("lat", 53.32) < tb[1]
+        or js.get("lat", 53.45) > tb[3]
+    ):
+        raise InvalidUsage("Your coordinates are out of bounds.", status_code=400)
+    # calculate a route
+    if js.get("lat", None) and js.get("lon", None):
+        route_nodes = generate_route(js["lat"], js["lon"], 4, graph=G)
+        route_nodes = list(zip(route_nodes[:-1], route_nodes[1:]))
+        index = [
+            full_graph_gdf[
+                (full_graph_gdf["u"] == u) & (full_graph_gdf["v"] == v)
+            ].index[0]
+            for u, v in route_nodes
+        ]
+        gdf_route_edges = full_graph_gdf.loc[index]
+        # we'd ordinarily just call to_json, but since we need to send the bounds too
+        # we have to manually build the json from a list containing both
+        resp = [
+            gdf_route_edges.geometry.__geo_interface__,
+            list(gdf_route_edges.total_bounds),
+        ]
+        response = app.response_class(
+            response=json.dumps(resp), mimetype="application/json"
+        )
+        return response
+    else:
+        raise InvalidUsage(
+            "Something went wrong with your coordinates", status_code=400
+        )
 
 
 if __name__ == "__main__":

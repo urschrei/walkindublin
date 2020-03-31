@@ -16,7 +16,7 @@ def deploy():
     """
     Deploy site on remote host
     """
-    with cd("/var/www/walkindublin.ie"):
+    with cd("/var/www/walkindublin"):
         with hide("output"):
             run("git pull")
             # run("venv/bin/python app.py db upgrade")
@@ -29,7 +29,7 @@ def deploy():
 @task
 def reload():
     """ Restart gunicorn and nginx """
-    with cd("/var/www/walkindublin.ie"):
+    with cd("/var/www/walkindublin"):
         with hide("output"):
             # soft-restart uWSGI
             sudo("systemctl restart walkindublin")

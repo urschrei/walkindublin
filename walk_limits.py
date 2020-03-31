@@ -7,8 +7,7 @@ def truncate(graph, centre, distance=2000):
         graph, centre_node, max_distance=distance, weight="length", retain_all=False
     )
     gdf_truncated = ox.save_load.graph_to_gdfs(
-        truncated, edges=True, node_geometry=False, fill_edge_geometry=True
+        truncated, nodes=False, edges=True, node_geometry=False, fill_edge_geometry=True
     )
     # we MAY need .to_crs("EPSG:4326")
-    gdf_truncated[1][["geometry"]].to_file("static/trunc.geojson", driver="GeoJSON")
-    return list(gdf_truncated[1].total_bounds)
+    return gdf_truncated["geometry"]

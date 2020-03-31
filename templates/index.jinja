@@ -16,19 +16,33 @@
     <script type="application/ld+json">{"@context": "http://schema.org","@type": "CreativeWork","author": "Stephan Hügel"}</script>
 </head>
 <body>
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+      <li class="nav-item">
+        <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Home</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" id="help-tab" data-toggle="tab" href="#help" role="tab" aria-controls="help" aria-selected="false">What's This?</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" id="distance-tab" data-toggle="tab" href="#distance" role="tab" aria-controls="help" aria-selected="false">Physical Distancing</a>
+      </li>
+    </ul>
+<div class="tab-content" id="myTabContent">
+
+<div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
 <div class="container-fluid" role="main">
     <div class="row" id="info">
         <div class="col">
-            <h5>What's This?</h5>
             <p><small>
-                Due to the current movement restrictions, we're not allowed to travel more than 2 km from our homes. Press the button to locate yourself, and see the roads you can walk to from where you are now.
+                Due to the <a href="https://www.gov.ie/en/publication/cf9b0d-new-public-health-measures-effective-now-to-prevent-further-spread-o/#the-only-reasons-you-can-leave-your-home">current movement restrictions</a>, we've been advised not to travel more than 2 km from our homes.
             </small></p>
             <p><small>
-                <strong>Remember:</strong> These are recommended distances for exercise and recreation. You can travel further for shopping, or if you're going to work. 
+                Press a button to locate yourself and see the streets you can walk to from where you are now, or to plan a loop that keeps you within 2 km of your location.
             </small></p>
             <form id="lookup" class="form-inline">
                 <div class="input-group mb-2 mr-sm-2">
-                    <button type="button" class="btn btn-dark mb-2" id="locate">Find Me</button>
+                    <button type="button" class="btn btn-dark mb-2 m-2" id="allstreets">Show All Streets</button>
+                    <button type="button" class="btn btn-dark mb-2 m-2" id="buildwalk">Find Me a Walk</button>
                 </div>
             </form>
         </div>
@@ -38,14 +52,58 @@
 </div>
 <footer class="footer">
     <div class="container-fluid">
-        <small><span class="text-muted">A <a href="https://twitter.com/urschrei">Stephan H&uuml;gel</a> distraction. <a href="https://github.com/urschrei">Source</a>.
-        </span></small>
-    </div>
-    <div class="container-fluid">
-        <small><span class="text-muted">How does this work? Using a street network of Dublin computed using <a href="https://osmnx.readthedocs.io/en/stable/">OSMNx</a>.
+        <small><span class="text-muted">A <a href="https://twitter.com/urschrei">Stephan H&uuml;gel</a> distraction. <a href="https://github.com/urschrei/walkindublin">Source</a>.
         </span></small>
     </div>
 </footer>
+</div>
+<div class="tab-pane fade show" id="help" role="tabpanel" aria-labelledby="help-tab">
+    <div class="container-fluid" role="main">
+    <div class="row">
+        <div class="col">
+            <h3>What is this?</h3>
+            <p>It's just a way of distracting myself, and, hopefully, you during the pandemic.</p>
+            <h3>How does it work?</h3>
+            <p>Using a street network of Dublin computed using <a href="https://osmnx.readthedocs.io/en/stable/">OSMNx</a>.</p>
+            <h3>Why only Dublin?</h3>
+            <p>The networks are big, and processing them is computationally expensive.</p>
+            <p>The code is open-source and liberally-licensed – feel free to make your own.</p>
+            <h3>What about my personal data?</h3>
+            <ul>
+            <li><p>This site does not store, sell, rent, or otherwise make your data available to anyone at any time;</p></li>
+            <li><p>It does not track you, use any analytics (first– or third-party), or send your location data anywhere;</p></li>
+            <li><p>It does not store your location data – it's used to calculate the street network, then discarded.</p></li>
+            </ul>
+            <h3>These Walks are Weird!</h3>
+            <p>They're loops calculated using relatively simple heuristics. Let the machine take you on a weird journey!</p>
+            <h3>Who Are you?</h3>
+            <p>My name and email address are on the main page.</p>
+        </div>
+    </div>
+</div>
+</div>
+
+<div class="tab-pane fade show" id="distance" role="tabpanel" aria-labelledby="distance-tab">
+    <div class="container-fluid" role="main">
+    <div class="row">
+        <div class="col">
+            <h3>Physical Distancing Outside</h3>
+            <ul>
+                <li><strong>Avoid</strong> close contact with others;</li>
+                <li><strong>Distance</strong> yourself at least 2 metres (6 feet) away from other people;</li>
+                <li><strong>Groups</strong> should be no more than four people unless all are from the same household;</li>
+                <li><strong>Don’t arrange</strong> to meet up with other groups;</li>
+                <li><strong>Avoid</strong> an area if it looks busy and go somewhere else for your walk.</li>
+            </ul>
+            <p>
+                <strong>For Daily Updates</strong> Visit <a href="www.gov.ie/health-covid-19">www.gov.ie/health-covid-19</a>
+            </p>
+        </div>
+    </div>
+</div>
+</div>
+
+</div>
 <script src="static/bundle.js"></script>
 </body>
 </html>

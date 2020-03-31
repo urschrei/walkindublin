@@ -1,7 +1,7 @@
 {
-  "name": "greggs_viz",
+  "name": "walkindublin",
   "version": "1.0.0",
-  "description": "How far can you walk?",
+  "description": "How far can you walk in Dublin?",
   "main": "rollup.config.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -10,15 +10,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/urschrei/"
+    "url": "git+https://github.com/urschrei/walkindublin"
   },
   "keywords": [
     "greggs"
   ],
   "author": "Stephan Hügel",
-  "license": "MIT",
+  "license": "Blue Oak Model License 1.0.0",
   "bugs": {
-    "url": "https://github.com/urschrei/"
+    "url": "https://github.com/urschrei/walkindublin/issues"
   },
   "homepage": "",
   "dependencies": {

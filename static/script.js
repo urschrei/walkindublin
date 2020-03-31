@@ -10,7 +10,7 @@ import './style.scss'
 import jQuery from 'jquery';
 var $ = jQuery;
 
-mapboxgl.accessToken = 'pk.eyJ1IjoidXJzY2hyZWkiLCJhIjoiY2pubHJsaGZjMWl1dzNrbzM3eDBuNzN3eiJ9.5xEWTiavcSRbv7LYZoAmUg';
+mapboxgl.accessToken = 'pk.eyJ1IjoidXJzY2hyZWkiLCJhIjoiY2s4Z2NseHRnMDA2cTNucGE4Z2U0ZTcwMyJ9.WKza9QLjoub4Z48taKuQ-Q';
 
 const dbounds = [
     [-6.3868511, 53.2990801],
@@ -29,22 +29,51 @@ const map = new mapboxgl.Map({
     bounds: dbounds
 });
 
-const routes_polygons = {
-    "id": "routes_polygons",
+const point_style = {
+    "id": "start_point_style",
+    "type": "circle",
+    "source": "point",
+    "paint": {
+        "circle-color": "red",
+        "circle-stroke-color": "#5b5b5b",
+        "circle-stroke-width": 2.5,
+        "circle-opacity": 0.5,
+        "circle-radius": 30.0,
+        "circle-pitch-alignment": "map"
+    }
+}
+
+const routes_lines = {
+    "id": "routes_lines",
     "type": "line",
     "source": "routes",
     "minzoom": 7,
     "paint": {
         "line-width": 3.0,
-        "line-color": "red",
-        "line-opacity": 0.2
+        "line-color": "#008080",
+        "line-opacity": 0.75
+    }
+}
+
+const routes_fill = {
+    "id": "routes_fill_extrusion",
+    "type": "fill-extrusion",
+    "source": "routes",
+    "minzoom": 7,
+    "paint": {
+        "fill-extrusion-color": "#FF0000",
+        "fill-extrusion-height": 10,
+        "fill-extrusion-opacity": 0.9
+    },
+    "light": {
+        "intensity": 1.0
     }
 }
 
 const dataSources = {
     "routes": {
-        "url": "static/trunc.geojson",
-        "polygon_layer": routes_polygons
+        "line_layer": routes_lines,
+        "fill_layer": routes_fill
     }
 };
 
@@ -62,7 +91,7 @@ async function getRoutes(m) {
                                 "type": "geojson",
                                 "data": data
                             })
-                            .addLayer(dataSources[item]["polygon_layer"]);
+                            .addLayer(dataSources[item]["line_layer"]);
                     } else {
                         m.getSource(item).setData(data);
                     }
@@ -112,37 +141,126 @@ map.on('load', function() {
 //     });
 // })
 
-// Locate nearest chain if geolocation is successful
-function glSuccess(position) {
-    // var p = point([position.coords.longitude, position.coords.latitude]);
-    // var nearest = nearestPoint(p, gdata[active_chain]);
-    map.flyTo({
-        center: position.coords,
-        zoom: 13,
-        curve: 1,
-        essential: true
+
+$("#allstreets").click(function() {
+    navigator.geolocation.getCurrentPosition(glStreetsSuccess, glError, {
+        enableHighAccuracy: true,
+        timeout: 2500
     });
-}
+});
+
+$("#buildwalk").click(function() {
+    navigator.geolocation.getCurrentPosition(glWalkSuccess, glError, {
+        enableHighAccuracy: true,
+        timeout: 2500
+    });
+})
 
 // If we can't geolocate for some reason
 function glError() {
-    $(".invalid-feedback").text("We Couldn't geolocate you!");
+    $(".invalid-feedback").text("We Couldn't Geolocate You!");
+    return false;
 }
 
-$("#locate").click(function() {
-    var pc = {
-        coords: {
-            latitude: 53.331953,
-            longitude: -6.271830
-        }
+function glStreetsSuccess(pc) {
+    var crd = {
+        "lon": pc.coords.longitude, 
+        "lat": pc.coords.latitude
     };
-    $.post("/streets", JSON.stringify(pc))
+    $.post("/streets", JSON.stringify(crd))
         .done(function(data) {
-            map.fitBounds(data);
-            getRoutes(map);
-            // tell map to load new geojson layer
+            var geojson = {
+                'type': 'FeatureCollection',
+                'features': [{
+                    'type': 'Feature',
+                    'geometry': {
+                        'type': 'Point',
+                        'coordinates': [pc.coords.longitude, pc.coords.latitude]
+                    }
+                }]
+            };
+            if (!map.getSource("point")) {
+                map.addSource('point', {
+                    'type': 'geojson',
+                    'data': geojson
+                });
+                map.addLayer(point_style);
+            } else {
+                map.getSource("point").setData(geojson);
+            }
+            if (!map.getSource("routes")) {
+                map.addSource("routes", {
+                        "type": "geojson",
+                        "data": data[0]
+                    })
+                    .addLayer(dataSources["routes"]["line_layer"]);
+            } else {
+                map.getSource("routes").setData(data[0]);
+            }
+            map.flyTo({
+                bearing: Math.floor(Math.random() * (360 - 1 + 1)) + 1,
+                pitch: Math.floor(Math.random() * (70.0 - 1.0 + 1.0)) + 50.0,
+                center: [pc.coords.longitude, pc.coords.latitude],
+                curve: 1,
+                zoom: 14
+            });
         })
         .fail(function() {
             $(".invalid-feedback").text("Hmm. Something went wrong");
         });
-});
+}
+
+function glWalkSuccess(pc) {
+    var crd = {
+        "lon": pc.coords.longitude, 
+        "lat": pc.coords.latitude
+    };
+    $.post("/route", JSON.stringify(crd))
+        .done(function(data) {
+            var geojson = {
+                'type': 'FeatureCollection',
+                'features': [{
+                    'type': 'Feature',
+                    'geometry': {
+                        'type': 'Point',
+                        'coordinates': [pc.coords.longitude, pc.coords.latitude]
+                    }
+                }]
+            };
+            if (!map.getSource("point")) {
+                map.addSource('point', {
+                    'type': 'geojson',
+                    'data': geojson
+                });
+                map.addLayer(point_style);
+            } else {
+                map.getSource("point").setData(geojson);
+            }
+            // check if Source exists, add if not
+            if (!map.getSource("routes")) {
+                map.addSource("routes", {
+                        "type": "geojson",
+                        "data": data[0]
+                    })
+                    .addLayer(dataSources["routes"]["fill_layer"])
+                    .addLayer(dataSources["routes"]["line_layer"]);
+            } else {
+                map.getSource("routes").setData(data[0]);
+            }
+            if (!map.getLayer(dataSources["routes"]["fill_layer"])) {
+                map.addLayer(dataSources["routes"]["fill_layer"]);
+            }
+
+            map.flyTo({
+                bearing: Math.floor(Math.random() * (360 - 1 + 1)) + 1,
+                pitch: Math.floor(Math.random() * (70.0 - 1.0 + 1.0)) + 50.0,
+                center: [pc.coords.longitude, pc.coords.latitude],
+                curve: 1,
+                zoom: 16
+            });
+            // .fitBounds(data[1]);
+        })
+        .fail(function() {
+            $(".invalid-feedback").text("Hmm. Something went wrong");
+        });
+}
