@@ -19,7 +19,7 @@ const dbounds = [
 
 const map = new mapboxgl.Map({
     container: 'map',
-    style: 'mapbox://styles/mapbox/light-v9',
+    style: 'mapbox://styles/urschrei/cjtg2ckwn0ggj1gpxzclgj7eu',
     zoom: 13.0,
     minZoom: 11,
     center: {
