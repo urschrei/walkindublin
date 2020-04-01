@@ -1,5 +1,5 @@
 import osmnx as ox
-from osmnx.simplify.simplify_graph
+from osmnx.simplify import simplify_graph
 
 
 def truncate(graph, centre, distance=2000):
