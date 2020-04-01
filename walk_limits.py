@@ -1,4 +1,5 @@
 import osmnx as ox
+from osmnx.simplify.simplify_graph
 
 
 def truncate(graph, centre, distance=2000):
@@ -7,7 +8,7 @@ def truncate(graph, centre, distance=2000):
         graph, centre_node, max_distance=distance, weight="length", retain_all=False
     )
     gdf_truncated = ox.save_load.graph_to_gdfs(
-        truncated, nodes=False, edges=True, node_geometry=False, fill_edge_geometry=True
+        simplify_graph(truncated), nodes=False, edges=True, node_geometry=False, fill_edge_geometry=True
     )
     # we MAY need .to_crs("EPSG:4326")
     return gdf_truncated["geometry"]
