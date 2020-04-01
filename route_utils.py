@@ -152,22 +152,25 @@ def evaluate_edges(
 
     # remove neighbor nodes that are dead ends (only point to one node)(?)
     n = []
-    badnode = []
+    badnodes = []
+    goodnodes = []
     for edge in adj_edges:
         edge_end = edge[1]
         nneighbor = [neighbor for neighbor in nx.all_neighbors(graph, edge_end)]
         if len(set(nneighbor)) > 1:
             n.append(edge)
+            goodnodes.append(edge)
         else:
-            badnode.append(edge)
+            badnodes.append(edge)
             # adj_edges.remove(edge) TODO FIX THIS
+    # print(badnode)
 
     # initialize suitability list
     suitability = []
     n_edge = []
 
     # for each edge, query edge attributes
-    for edge in adj_edges:
+    for edge in goodnodes:
         # set dict of attributes
         attributes = edge[-1]
 
@@ -197,6 +200,10 @@ def evaluate_edges(
             eval_function(attributes=attributes, pct_remaining=pct_remaining)
         )
         n_edge.append(edge[1])
+    # this is a terrible hack
+    # ¯\_(ツ)_/¯
+    if not len(n_edge):
+        return badnodes[0][1]
 
     # select index randomly with probability proportional evaulation function
     suitability = [i / sum(suitability) for i in suitability]
