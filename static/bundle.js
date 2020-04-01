@@ -18522,7 +18522,7 @@
 	var dbounds = [[-6.3868511, 53.2990801], [-6.1188691, 53.4100279]];
 	var map = new mapboxGl.Map({
 	  container: 'map',
-	  style: 'mapbox://styles/mapbox/light-v9',
+	  style: 'mapbox://styles/urschrei/cjtg2ckwn0ggj1gpxzclgj7eu',
 	  zoom: 13.0,
 	  minZoom: 11,
 	  center: {
