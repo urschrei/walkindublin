@@ -9,7 +9,7 @@ import networkx as nx
 ox.config(use_cache=True)
 import numpy as np
 import time
-from osmnx.geo_utils import get_nearest_node, add_edge_bearings, get_bearing
+from osmnx.geo_utils import get_nearest_node, get_bearing
 from osmnx.core import graph_from_point
 import geopandas as gpd
 from shapely.geometry import Point, LineString, Polygon
@@ -69,7 +69,10 @@ def outbound_optimization(
         try:
             previous_bearing = int(
                 np.interp(
-                    abs(attributes["bearing"] - attributes["previous_bearing"]),
+                    abs(
+                        float(attributes["bearing"])
+                        - float(attributes["previous_bearing"])
+                    ),
                     [0, 180],
                     [10, 1],
                 )
@@ -84,7 +87,9 @@ def outbound_optimization(
         try:
             home_bearing = int(
                 np.interp(
-                    abs(attributes["bearing"] - attributes["home_bearing"]),
+                    abs(
+                        float(attributes["bearing"]) - float(attributes["home_bearing"])
+                    ),
                     [0, 180],
                     [10, 1],
                 )
@@ -298,7 +303,10 @@ def inbound_optimization(
         try:
             previous_bearing = int(
                 np.interp(
-                    abs(attributes["bearing"] - attributes["previous_bearing"]),
+                    abs(
+                        float(attributes["bearing"])
+                        - float(attributes["previous_bearing"])
+                    ),
                     [0, 180],
                     [10, 1],
                 )
@@ -314,7 +322,9 @@ def inbound_optimization(
         try:
             home_bearing = int(
                 np.interp(
-                    abs(attributes["bearing"] - attributes["home_bearing"]),
+                    abs(
+                        float(attributes["bearing"]) - float(attributes["home_bearing"])
+                    ),
                     [0, 180],
                     [1, 10],
                 )
@@ -462,9 +472,6 @@ def generate_route(
     #     except Exception:
     #         log('Unable to simplify graph further')
     #         pass
-    #     # add length attribute to all nodes
-    #     core.add_edge_lengths(streets)
-    add_edge_bearings(streets)
 
     # get start node
     start_node = get_nearest_node(streets, (lat, lon))

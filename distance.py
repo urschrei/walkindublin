@@ -8,6 +8,7 @@ import logging
 
 # OSMnx config
 import osmnx as ox
+from osmnx.geo_utils import add_edge_bearings
 
 ox.config(use_cache=True)
 import geopandas as gpd
@@ -22,6 +23,7 @@ utm = CRS.from_epsg(32629)
 # this file includes edge lengths as the 'length' property
 # ox assumes a "data" directory in which this file is located tsk tsk
 G = ox.load_graphml("dublin.graphml")
+# G = add_edge_bearings(G)
 # G_projected = ox.project_graph(G)
 full_graph_gdf = ox.save_load.graph_to_gdfs(G, nodes=False, fill_edge_geometry=True)
 
@@ -164,12 +166,12 @@ def route():
             ].index[0]
             for u, v in route_nodes
         ]
-        gdf_route_edges = full_graph_gdf.loc[index]
+        # gdf_route_edges = full_graph_gdf.loc[index]
         # we'd ordinarily just call to_json, but since we need to send the bounds too
         # we have to manually build the json from a list containing both
         resp = [
-            gdf_route_edges.geometry.buffer(0.00001).__geo_interface__,
-            list(gdf_route_edges.total_bounds),
+            full_graph_gdf.loc[index].geometry.buffer(0.00001).__geo_interface__,
+            list(full_graph_gdf.loc[index].total_bounds),
         ]
         response = app.response_class(
             response=json.dumps(resp), mimetype="application/json"
