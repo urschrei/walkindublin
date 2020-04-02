@@ -40257,8 +40257,10 @@
 	    "lon": pc.coords.longitude,
 	    "lat": pc.coords.latitude
 	  };
+	  $("#allstreets").attr('value', 'Wait…').text('Wait…');
 	  $.post("/streets", JSON.stringify(crd)).done(function (data) {
 	    addToMap(pc, data);
+	    $("#allstreets").attr('value', 'Show All Streets').text("Show All Streets");
 	  }).fail(function (data) {
 	    $("#feedback").text(data.responseJSON.message);
 	  });
@@ -40298,7 +40300,7 @@
 	  } else {
 	    map.getSource("point").setData(geojson);
 	  } // check if Source exists, add if not
-	  // first, build a Turf featureCollection, so we cna buffer it
+	  // first, build a Turf featureCollection, so we can buffer it
 
 
 	  var fc = helpers_13(data[0]['features']);
