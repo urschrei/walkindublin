@@ -18658,7 +18658,7 @@
 	      map.addSource("routes", {
 	        "type": "geojson",
 	        "data": data[0]
-	      }).addLayer(dataSources["routes"]["line_layer"]);
+	      }); // .addLayer(dataSources["routes"]["line_layer"]);
 	    } else {
 	      map.getSource("routes").setData(data[0]);
 	    }
@@ -18707,7 +18707,7 @@
 	      map.addSource("routes", {
 	        "type": "geojson",
 	        "data": data[0]
-	      }).addLayer(dataSources["routes"]["fill_layer"]).addLayer(dataSources["routes"]["line_layer"]);
+	      }).addLayer(dataSources["routes"]["fill_layer"]); // .addLayer(dataSources["routes"]["line_layer"]);
 	    } else {
 	      map.getSource("routes").setData(data[0]);
 	    }
