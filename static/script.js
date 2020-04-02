@@ -164,8 +164,7 @@ $("#buildwalk").click(function() {
 // If we can't geolocate for some reason
 function glError() {
     $("#feedback").addClass("is-invalid");
-    $(".invalid-feedback").text("We Couldn't Geolocate You!");
-    return false;
+    $("#feedback").text("We couldn't geolocate you!");
 }
 
 function glStreetsSuccess(pc) {

@@ -18625,8 +18625,7 @@
 
 	function glError() {
 	  $("#feedback").addClass("is-invalid");
-	  $(".invalid-feedback").text("We Couldn't Geolocate You!");
-	  return false;
+	  $("#feedback").text("We couldn't geolocate you!");
 	}
 
 	function glStreetsSuccess(pc) {
