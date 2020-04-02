@@ -18609,31 +18609,25 @@
 	// })
 
 	$("#allstreets").click(function () {
-	  // navigator.geolocation.getCurrentPosition(glStreetsSuccess, glError, {
-	  //     enableHighAccuracy: true,
-	  //     timeout: 2500
-	  // });
-	  var pc = {
-	    "coords": {
-	      "latitude": 53.3318,
-	      "longitude": -6.2717
-	    }
-	  };
-	  glStreetsSuccess(pc);
+	  navigator.geolocation.getCurrentPosition(glStreetsSuccess, glError, {
+	    enableHighAccuracy: true,
+	    timeout: 2500
+	  }); // var pc = {"coords": {"latitude": 55.3318, "longitude": -6.2717}};
+	  // glStreetsSuccess(pc);
 	});
 	$("#buildwalk").click(function () {
-	  // navigator.geolocation.getCurrentPosition(glWalkSuccess, glError, {
-	  //     enableHighAccuracy: true,
-	  //     timeout: 2500
-	  // });
-	  var pc = {
-	    "coords": {
-	      "latitude": 53.3318,
-	      "longitude": -6.2717
-	    }
-	  };
-	  glWalkSuccess(pc);
+	  navigator.geolocation.getCurrentPosition(glWalkSuccess, glError, {
+	    enableHighAccuracy: true,
+	    timeout: 2500
+	  }); // var pc = {"coords": {"latitude": 55.3318, "longitude": -6.2717}};
+	  // glWalkSuccess(pc);
 	}); // If we can't geolocate for some reason
+
+	function glError() {
+	  $("#feedback").addClass("is-invalid");
+	  $(".invalid-feedback").text("We Couldn't Geolocate You!");
+	  return false;
+	}
 
 	function glStreetsSuccess(pc) {
 	  var crd = {
@@ -18678,8 +18672,9 @@
 	      curve: 1,
 	      zoom: 14
 	    });
-	  }).fail(function () {
-	    $(".invalid-feedback").text("Hmm. Something went wrong");
+	    $("#feedback").text("");
+	  }).fail(function (data) {
+	    $("#feedback").text(data.responseJSON.message);
 	  });
 	}
 
@@ -18730,9 +18725,11 @@
 	      center: [pc.coords.longitude, pc.coords.latitude],
 	      curve: 1,
 	      zoom: 16
-	    }); // .fitBounds(data[1]);
-	  }).fail(function () {
-	    $(".invalid-feedback").text("Hmm. Something went wrong");
+	    });
+	    $("#feedback").text(""); // .fitBounds(data[1]);
+	  }).fail(function (data) {
+	    $("#feedback").addClass("is-invalid");
+	    $("#feedback").text(data.responseJSON.message);
 	  });
 	}
 

@@ -126,7 +126,7 @@ def streets():
         or js.get("lat", 53.32) < tb[1]
         or js.get("lat", 53.45) > tb[3]
     ):
-        raise InvalidUsage("Your coordinates are out of bounds.", status_code=400)
+        raise InvalidUsage("Are you sure you're in Dublin?", status_code=400)
     # calculate street network
     if js.get("lat", None) and js.get("lon", None):
         gdf_t = truncate(G, (js["lat"], js["lon"]))
@@ -155,7 +155,7 @@ def route():
         or js.get("lat", 53.32) < tb[1]
         or js.get("lat", 53.45) > tb[3]
     ):
-        raise InvalidUsage("Your coordinates are out of bounds.", status_code=400)
+        raise InvalidUsage("Are you sure you're in Dublin?", status_code=400)
     # calculate a route
     if js.get("lat", None) and js.get("lon", None):
         route_nodes = generate_route(js["lat"], js["lon"], 4, graph=G)

@@ -143,27 +143,27 @@ map.on('load', function() {
 
 
 $("#allstreets").click(function() {
-    // navigator.geolocation.getCurrentPosition(glStreetsSuccess, glError, {
-    //     enableHighAccuracy: true,
-    //     timeout: 2500
-    // });
-    var pc = {"coords": {"latitude": 53.3318, "longitude": -6.2717}};
-    glStreetsSuccess(pc);
+    navigator.geolocation.getCurrentPosition(glStreetsSuccess, glError, {
+        enableHighAccuracy: true,
+        timeout: 2500
+    });
+    // var pc = {"coords": {"latitude": 55.3318, "longitude": -6.2717}};
+    // glStreetsSuccess(pc);
 
 });
 
 $("#buildwalk").click(function() {
-    // navigator.geolocation.getCurrentPosition(glWalkSuccess, glError, {
-    //     enableHighAccuracy: true,
-    //     timeout: 2500
-    // });
-    var pc = {"coords": {"latitude": 53.3318, "longitude": -6.2717}};
-    glWalkSuccess(pc);
+    navigator.geolocation.getCurrentPosition(glWalkSuccess, glError, {
+        enableHighAccuracy: true,
+        timeout: 2500
+    });
+    // var pc = {"coords": {"latitude": 55.3318, "longitude": -6.2717}};
+    // glWalkSuccess(pc);
 })
 
 // If we can't geolocate for some reason
 function glError() {
-    $("#allstreets").addClass("is-invalid");
+    $("#feedback").addClass("is-invalid");
     $(".invalid-feedback").text("We Couldn't Geolocate You!");
     return false;
 }
@@ -210,9 +210,10 @@ function glStreetsSuccess(pc) {
                 curve: 1,
                 zoom: 14
             });
+            $("#feedback").text("");
         })
-        .fail(function() {
-            $(".invalid-feedback").text("Hmm. Something went wrong");
+        .fail(function(data) {
+            $("#feedback").text(data.responseJSON.message);
         });
 }
 
@@ -264,9 +265,11 @@ function glWalkSuccess(pc) {
                 curve: 1,
                 zoom: 16
             });
+            $("#feedback").text("");
             // .fitBounds(data[1]);
         })
-        .fail(function() {
-            $(".invalid-feedback").text("Hmm. Something went wrong");
+        .fail(function(data) {
+            $("#feedback").addClass("is-invalid");
+            $("#feedback").text(data.responseJSON.message);
         });
 }
