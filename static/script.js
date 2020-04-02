@@ -143,17 +143,22 @@ map.on('load', function() {
 
 
 $("#allstreets").click(function() {
-    navigator.geolocation.getCurrentPosition(glStreetsSuccess, glError, {
-        enableHighAccuracy: true,
-        timeout: 2500
-    });
+    // navigator.geolocation.getCurrentPosition(glStreetsSuccess, glError, {
+    //     enableHighAccuracy: true,
+    //     timeout: 2500
+    // });
+    var pc = {"coords": {"latitude": 53.3318, "longitude": -6.2717}};
+    glStreetsSuccess(pc);
+
 });
 
 $("#buildwalk").click(function() {
-    navigator.geolocation.getCurrentPosition(glWalkSuccess, glError, {
-        enableHighAccuracy: true,
-        timeout: 2500
-    });
+    // navigator.geolocation.getCurrentPosition(glWalkSuccess, glError, {
+    //     enableHighAccuracy: true,
+    //     timeout: 2500
+    // });
+    var pc = {"coords": {"latitude": 53.3318, "longitude": -6.2717}};
+    glWalkSuccess(pc);
 })
 
 // If we can't geolocate for some reason
