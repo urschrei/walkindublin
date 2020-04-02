@@ -108,6 +108,11 @@ def index():
     return render_template("index.jinja")
 
 
+@app.route("/images/<filename>.png", methods=["GET"])
+def images(filename):
+    return app.send_static_file("%s.png" % filename)
+
+
 @app.route("/streets", methods=["POST"])
 def streets():
     js = request.get_json(force=True)
@@ -124,7 +129,7 @@ def streets():
     if js.get("lat", None) and js.get("lon", None):
         gdf_t = truncate(G, (js["lat"], js["lon"]))
         resp = [
-            gdf_t.buffer(.00001).__geo_interface__,
+            gdf_t.buffer(0.00001).__geo_interface__,
             list(gdf_t.total_bounds),
         ]
         response = app.response_class(
@@ -163,7 +168,7 @@ def route():
         # we'd ordinarily just call to_json, but since we need to send the bounds too
         # we have to manually build the json from a list containing both
         resp = [
-            gdf_route_edges.geometry.buffer(.00001).__geo_interface__,
+            gdf_route_edges.geometry.buffer(0.00001).__geo_interface__,
             list(gdf_route_edges.total_bounds),
         ]
         response = app.response_class(
