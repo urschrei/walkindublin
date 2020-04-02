@@ -77,30 +77,6 @@ const dataSources = {
     }
 };
 
-// Add GeoJSON layers to map, and make them available to turf
-async function getRoutes(m) {
-    var promises = [];
-    promises.push(
-        Object.keys(dataSources).forEach(function(item) {
-            fetch(dataSources[item]["url"])
-                .then(response => response.json())
-                .then(data => {
-                    // check if Source exists, add if not
-                    if (!map.getSource(item)) {
-                        m.addSource(item, {
-                                "type": "geojson",
-                                "data": data
-                            })
-                            .addLayer(dataSources[item]["line_layer"]);
-                    } else {
-                        m.getSource(item).setData(data);
-                    }
-                })
-        })
-    );
-    await Promise.all(promises);
-}
-
 map.on('load', function() {
     // getBranches(this);
     if ("geolocation" in navigator) {
