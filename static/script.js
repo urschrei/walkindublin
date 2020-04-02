@@ -1,9 +1,10 @@
 import mapboxgl from 'mapbox-gl';
 // import nearestPoint from '@turf/nearest-point'
-// import {
+import buffer from '@turf/buffer'
+import {
 //     point,
-//     featureCollection
-// } from '@turf/helpers'
+    featureCollection
+} from '@turf/helpers'
 import 'bootstrap';
 import './style.scss'
 
@@ -193,13 +194,15 @@ function addToMap(pc, data) {
         map.getSource("point").setData(geojson);
     }
     // check if Source exists, add if not
+    // first, build a Turf featureCollection, so we cna buffer it
+    var fc = featureCollection(data[0]['features']);
     if (!map.getSource("routes")) {
         map.addSource("routes", {
                 "type": "geojson",
-                "data": data[0]
+                "data": buffer(fc, 0.001)
             })
     } else {
-        map.getSource("routes").setData(data[0]);
+        map.getSource("routes").setData(buffer(fc, 0.001));
     }
     if (!map.getLayer(dataSources["routes"]["fill_layer"])) {
         map.addLayer(dataSources["routes"]["fill_layer"]);

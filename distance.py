@@ -131,7 +131,7 @@ def streets():
     if js.get("lat", None) and js.get("lon", None):
         gdf_t = truncate(G, (js["lat"], js["lon"]))
         resp = [
-            gdf_t.buffer(0.00001).__geo_interface__,
+            gdf_t.__geo_interface__,
             list(gdf_t.total_bounds),
         ]
         response = app.response_class(
@@ -170,7 +170,7 @@ def route():
         # we'd ordinarily just call to_json, but since we need to send the bounds too
         # we have to manually build the json from a list containing both
         resp = [
-            full_graph_gdf.loc[index].geometry.buffer(0.00001).__geo_interface__,
+            full_graph_gdf.loc[index].geometry.__geo_interface__,
             list(full_graph_gdf.loc[index].total_bounds),
         ]
         response = app.response_class(

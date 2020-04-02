@@ -24,6 +24,7 @@
   "dependencies": {
     "@babel/preset-env": "^7.8.4",
     "@popperjs/core": "^2.0.5",
+    "@turf/buffer": "^5.1.5",
     "@turf/helpers": "^6.1.4",
     "@turf/nearest-point": "^6.0.1",
     "bootstrap": "^4.4.1",
