@@ -17961,6 +17961,10 @@
 	    map.addLayer(dataSources["routes"]["routes_fill_extrusion"]);
 	  }
 
+	  if (!map.getLayer(dataSources["routes"]["fill_extrusion"])) {
+	    map.addLayer(dataSources["routes"]["fill_extrusion"]);
+	  }
+
 	  map.flyTo({
 	    bearing: Math.floor(Math.random() * (360 - 1 + 1)) + 1,
 	    pitch: Math.floor(Math.random() * (70.0 - 1.0 + 1.0)) + 50.0,
