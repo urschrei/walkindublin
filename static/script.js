@@ -206,9 +206,6 @@ function addToMap(pc, data) {
     if (!map.getLayer(dataSources["routes"]["fill_layer"])) {
         map.addLayer(dataSources["routes"]["fill_layer"]);
     }
-    if (!map.getLayer(dataSources["routes"]["routes_fill_extrusion"])) {
-        map.addLayer(dataSources["routes"]["routes_fill_extrusion"]);
-    }
     if (!map.getLayer(dataSources["routes"]["fill_extrusion"])) {
         map.addLayer(dataSources["routes"]["fill_extrusion"]);
     }
