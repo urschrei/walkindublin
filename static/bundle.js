@@ -17880,14 +17880,14 @@
 	  navigator.geolocation.getCurrentPosition(glStreetsSuccess, glError, {
 	    enableHighAccuracy: true,
 	    timeout: 2500
-	  }); // var pc = {"coords": {"latitude": 55.3318, "longitude": -6.2717}};
+	  }); // var pc = {"coords": {"latitude": 53.3318, "longitude": -6.2717}};
 	  // glStreetsSuccess(pc);
 	});
 	$("#buildwalk").click(function () {
 	  navigator.geolocation.getCurrentPosition(glWalkSuccess, glError, {
 	    enableHighAccuracy: true,
 	    timeout: 2500
-	  }); // var pc = {"coords": {"latitude": 55.3318, "longitude": -6.2717}};
+	  }); // var pc = {"coords": {"latitude": 53.3318, "longitude": -6.2717}};
 	  // glWalkSuccess(pc);
 	}); // If we can't geolocate for some reason
 
@@ -17948,17 +17948,13 @@
 	    map.addSource("routes", {
 	      "type": "geojson",
 	      "data": data[0]
-	    }).addLayer(dataSources["routes"]["fill_layer"]); // .addLayer(dataSources["routes"]["line_layer"]);
+	    });
 	  } else {
 	    map.getSource("routes").setData(data[0]);
 	  }
 
 	  if (!map.getLayer(dataSources["routes"]["fill_layer"])) {
 	    map.addLayer(dataSources["routes"]["fill_layer"]);
-	  }
-
-	  if (!map.getLayer(dataSources["routes"]["fill_extrusion"])) {
-	    map.addLayer(dataSources["routes"]["fill_extrusion"]);
 	  }
 
 	  map.flyTo({

@@ -123,7 +123,7 @@ $("#allstreets").click(function() {
         enableHighAccuracy: true,
         timeout: 2500
     });
-    // var pc = {"coords": {"latitude": 55.3318, "longitude": -6.2717}};
+    // var pc = {"coords": {"latitude": 53.3318, "longitude": -6.2717}};
     // glStreetsSuccess(pc);
 
 });
@@ -133,7 +133,7 @@ $("#buildwalk").click(function() {
         enableHighAccuracy: true,
         timeout: 2500
     });
-    // var pc = {"coords": {"latitude": 55.3318, "longitude": -6.2717}};
+    // var pc = {"coords": {"latitude": 53.3318, "longitude": -6.2717}};
     // glWalkSuccess(pc);
 })
 
@@ -198,16 +198,11 @@ function addToMap(pc, data) {
                 "type": "geojson",
                 "data": data[0]
             })
-            .addLayer(dataSources["routes"]["fill_layer"])
-            // .addLayer(dataSources["routes"]["line_layer"]);
     } else {
         map.getSource("routes").setData(data[0]);
     }
     if (!map.getLayer(dataSources["routes"]["fill_layer"])) {
         map.addLayer(dataSources["routes"]["fill_layer"]);
-    }
-    if (!map.getLayer(dataSources["routes"]["fill_extrusion"])) {
-        map.addLayer(dataSources["routes"]["fill_extrusion"]);
     }
     map.flyTo({
         bearing: Math.floor(Math.random() * (360 - 1 + 1)) + 1,
