@@ -165,6 +165,7 @@ function glWalkSuccess(pc) {
         "lon": pc.coords.longitude,
         "lat": pc.coords.latitude
     };
+    $("#buildwalk").attr('value', 'Wait…').text('Wait…');
     $.post("/route", JSON.stringify(crd))
         .done(function(data) {
             addToMap(pc, data);
