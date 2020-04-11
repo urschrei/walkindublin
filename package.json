@@ -30,7 +30,7 @@
     "bootstrap": "^4.4.1",
     "chart.js": "^2.9.3",
     "jquery": "^3.4.1",
-    "mapbox-gl": "^1.6.1",
+    "mapbox-gl": "^1.9.1",
     "pjax": "^0.2.8",
     "popper.js": "^1.16.1",
     "save-dev": "0.0.1-security",
