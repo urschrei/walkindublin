@@ -169,6 +169,7 @@ function glWalkSuccess(pc) {
     $.post("/route", JSON.stringify(crd))
         .done(function(data) {
             addToMap(pc, data);
+            $("#buildwalk").attr('value', 'Show All Streets').text("Show All Streets");
         })
         .fail(function(data) {
             $("#feedback").addClass("is-invalid");
